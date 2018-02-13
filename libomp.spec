@@ -1,8 +1,8 @@
-%global rc_ver 1
+%global rc_ver 2
 
 Name: libomp
 Version: 6.0.0
-Release: 0.2.rc%{rc_ver}%{?dist}
+Release: 0.3.rc%{rc_ver}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -66,6 +66,9 @@ cd _build
 %endif
 
 %changelog
+* Tue Feb 13 2018 Tom Stellard <tstellar@redhat.com> - 6.0.0-0.3.rc2
+- 6.0.0-rc2 Release
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.0-0.2.rc1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
