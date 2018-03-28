@@ -1,0 +1,10 @@
+- hosts: localhost
+  roles:
+  - role: standard-test-basic
+    tests:
+    - libomp-regression-tests
+    environment:
+      TEST_CMD:
+        "/usr/share/libomp/runtest.sh"
+    required_packages:
+    - libomp-test
