@@ -1,6 +1,13 @@
+%ifarch ppc64le
+%global libomp_arch ppc64
+%else
+%global libomp_arch %{_arch}
+%endif
+
+
 Name: libomp
 Version: 6.0.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -14,6 +21,7 @@ BuildRequires: elfutils-libelf-devel
 BuildRequires: perl
 BuildRequires: perl-Data-Dumper
 BuildRequires: perl-Encode
+BuildRequires: libffi-devel
 
 Requires: elfutils-libelf%{?isa}
 
@@ -56,6 +64,9 @@ cd _build
 %files
 %{_libdir}/libomp.so
 %{_libdir}/libomptarget.so
+%ifnarch %{arm} %{ix86}
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%endif
 
 %files devel
 %{_libdir}/clang/%{version}/include/omp.h
@@ -64,6 +75,9 @@ cd _build
 %endif
 
 %changelog
+* Wed Mar 28 2018 Tom Stellard <tstellar@redhat.com> - 6.0.0-2
+- Enable libomptarget plugins
+
 * Fri Mar 09 2018 Tom Stellard <tstellar@redhat.com> - 6.0.0-1
 - 6.0.0 Release
 
