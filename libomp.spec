@@ -1,5 +1,5 @@
 Name: libomp
-Version: 5.0.1
+Version: 5.0.2
 Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -60,6 +60,9 @@ cd _build
 %{_libdir}/clang/%{version}/include/omp.h
 
 %changelog
+* Mon May 07 2018 Tom Stellard <tstellar@redhat.com> - 5.0.2-1
+- 5.0.2 Release
+
 * Thu Dec 21 2017 Tom Stellard <tstellar@redhat.com> - 5.0.1-1
 - 5.0.1 Release.
 
