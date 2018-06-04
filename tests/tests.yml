@@ -1,10 +1,11 @@
 - hosts: localhost
   roles:
   - role: standard-test-basic
-    tests:
-    - libomp-regression-tests
-    environment:
-      TEST_CMD:
-        "/usr/share/libomp/runtest.sh"
+    tags:
+      - classic
     required_packages:
-    - libomp-test
+      - libomp-test
+    tests:
+      - libomp-regression-tests:
+          dir: ./
+          run: /usr/share/libomp/runtest.sh --threads 8

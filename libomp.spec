@@ -6,7 +6,7 @@
 
 Name: libomp
 Version: 6.0.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -130,6 +130,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Mon Jul 02 2018 Tom Stellard <tstellar@redhat.com> - 6.0.1-2
+- Add -threads option to runtest.sh
+
 * Thu Jun 28 2018 Tom Stellard <tstellar@redhat.com> - 6.0.1-1
 - 6.0.1 Release
 
