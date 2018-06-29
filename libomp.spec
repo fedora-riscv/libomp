@@ -4,11 +4,9 @@
 %global libomp_arch %{_arch}
 %endif
 
-%global rc_ver 1
-
 Name: libomp
 Version: 6.0.1
-Release: 0.1.rc%{rc_ver}%{?dist}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -132,6 +130,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Thu Jun 28 2018 Tom Stellard <tstellar@redhat.com> - 6.0.1-1
+- 6.0.1 Release
+
 * Fri May 11 2018 Tom Stellard <tstellar@redhat.com> - 6.0.0-0.1.rc1
 - 6.0.1-rc1 Release
 
