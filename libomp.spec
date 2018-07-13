@@ -6,7 +6,7 @@
 
 Name: libomp
 Version: 6.0.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -130,6 +130,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Mon Jul 02 2018 Tom Stellard <tstellar@redhat.com> - 6.0.1-2
 - Add -threads option to runtest.sh
 
