@@ -4,14 +4,16 @@
 %global libomp_arch %{_arch}
 %endif
 
+%global rc_ver 1
+
 Name: libomp
-Version: 6.0.1
-Release: 3%{?dist}
+Version: 7.0.0
+Release: 0.1.rc%{rc_ver}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org	
-Source0: http://llvm.org/releases/%{version}/openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src.tar.xz
+Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src.tar.xz
 Source1: runtest.sh
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
@@ -130,6 +132,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Tue Aug 14 2018 Tom Stellard <tstellar@redhat.com> - 7.0.0-0.1.rc1
+- 7.0.1-rc1 Release
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 6.0.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
