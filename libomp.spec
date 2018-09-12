@@ -4,11 +4,11 @@
 %global libomp_arch %{_arch}
 %endif
 
-%global rc_ver 1
+%global rc_ver 3
 
 Name: libomp
 Version: 7.0.0
-Release: 0.1.rc%{rc_ver}%{?dist}
+Release: 0.2.rc%{rc_ver}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -132,6 +132,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Wed Sep 12 2018 Tom Stellard <tstellar@redhat.com> - 7.0.0-0.2.rc3
+- 7.0.0-rc3 Release
+
 * Tue Aug 14 2018 Tom Stellard <tstellar@redhat.com> - 7.0.0-0.1.rc1
 - 7.0.1-rc1 Release
 
