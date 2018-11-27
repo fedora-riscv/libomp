@@ -1,3 +1,7 @@
+#%%global rc_ver 3
+%global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
+
+
 %ifarch ppc64le
 %global libomp_arch ppc64
 %else
@@ -5,13 +9,13 @@
 %endif
 
 Name: libomp
-Version: 7.0.0
-Release: 1%{?dist}
+Version: 7.0.1
+Release: 1%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org	
-Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src.tar.xz
+Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: runtest.sh
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
@@ -130,6 +134,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
+* Mon Dec 17 2018 sguelton@redhat.com - 7.0.1-1
+- 7.0.1 Release
+
 * Wed Sep 12 2018 Tom Stellard <tstellar@redhat.com> - 7.0.0-1
 - 7.0.1 Release
 
