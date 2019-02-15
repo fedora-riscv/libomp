@@ -127,6 +127,7 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %files devel
 %{_libdir}/clang/%{version}/include/omp.h
 %ifnarch %{arm}
+%{_libdir}/clang/%{version}/include/omp-tools.h
 %{_libdir}/clang/%{version}/include/ompt.h
 %endif
 
