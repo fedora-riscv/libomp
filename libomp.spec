@@ -1,4 +1,4 @@
-%global rc_ver 1
+%global rc_ver 2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,7 +10,7 @@
 
 Name: libomp
 Version: 8.0.0
-Release: 1%{?rc_ver:.rc%{rc_ver}}%{?dist}.1
+Release: 0.2%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -135,7 +135,10 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 %{_datadir}/libomp
 
 %changelog
-* Mon Feb 11 2019 sguelton@redhat.com - 8.0.0-1.rc1
+* Mon Feb 11 2019 sguelton@redhat.com - 8.0.0-0.2.rc2
+- 8.0.0 Release candidate 2
+
+* Mon Feb 11 2019 sguelton@redhat.com - 8.0.0-0.1.rc1
 - 8.0.0 Release candidate 1
 
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 7.0.1-1.1
