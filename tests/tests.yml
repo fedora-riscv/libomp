@@ -8,4 +8,4 @@
     tests:
       - libomp-regression-tests:
           dir: ./
-          run: /usr/share/libomp/runtest.sh --threads 8
+          run: /usr/libexec/tests/libomp/run-lit-tests --threads 8
