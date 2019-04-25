@@ -10,13 +10,14 @@
 
 Name: libomp
 Version: 8.0.0
-Release: 1%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release: 2%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org	
 Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
-Source1: runtest.sh
+Source1: run-lit-tests
+Source2: lit.fedora.cfg.py
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
 
@@ -80,41 +81,26 @@ cd _build
 # Test package setup
 %global libomp_srcdir %{_datadir}/libomp/src/
 %global libomp_testdir %{libomp_srcdir}/runtime/test/
-%global gcc_lit_cfg %{buildroot}%{libomp_testdir}/gcc.site.cfg
-%global clang_lit_cfg %{buildroot}%{libomp_testdir}/clang.site.cfg
+%global lit_cfg %{libomp_testdir}/%{_arch}.site.cfg.py
+%global lit_fedora_cfg %{_datadir}/libomp/lit.fedora.cfg.py
 
 install -d %{buildroot}%{libomp_srcdir}/runtime
 cp -R runtime/test  %{buildroot}%{libomp_srcdir}/runtime
 cp -R runtime/src  %{buildroot}%{libomp_srcdir}/runtime
 
-# Add symlinks to the libomp headers/library so gcc can find them.
-ln -s %{_libdir}/clang/%{version}/include/omp.h %{buildroot}%{libomp_testdir}/omp.h
-ln -s %{_libdir}/clang/%{version}/include/ompt.h %{buildroot}%{libomp_testdir}/ompt.h
-ln -s %{_libdir}/libomp.so %{buildroot}%{libomp_testdir}/libgomp.so
+# Generate lit config files.  Strip off the last line that initiates the
+# test run, so we can customize the configuration.
+head -n -1 _build/runtime/test/lit.site.cfg >> %{buildroot}%{lit_cfg}
 
-# Generic test config
-echo "import tempfile" > %{gcc_lit_cfg}
-cat _build/runtime/test/lit.site.cfg >> %{gcc_lit_cfg}
-sed -i 's~\(config.test_filecheck = \)""~\1"%{_libdir}/llvm/FileCheck"~' %{gcc_lit_cfg}
-sed -i 's~\(config.omp_header_directory = \)"[^"]\+"~\1"%{_includedir}"~' %{gcc_lit_cfg}
-sed -i 's~\(config.libomp_obj_root = \)"[^"]\+"~\1tempfile.mkdtemp()[1]~' %{gcc_lit_cfg}
-sed -i 's~\(lit_config.load_config(config, \)"[^"]\+"~\1"%{libomp_testdir}/lit.cfg"~' %{gcc_lit_cfg}
+# Install custom fedora config file
+cp %{SOURCE2} %{buildroot}%{lit_fedora_cfg}
 
-# GCC config
-# test_compiler_features was already populated with gcc information if gcc was used
-# to compile libomp.
-sed -i 's~\(config.test_c_compiler = \)"[^"]\+"~\1"%{_bindir}/gcc"~' %{gcc_lit_cfg}
-sed -i 's~\(config.test_cxx_compiler = \)"[^"]\+"~\1"%{_bindir}/g++"~' %{gcc_lit_cfg}
-sed -i 's~\(config.library_dir = \)"[^"]\+"~\1"%{libomp_testdir}"~' %{gcc_lit_cfg}
+# Patch lit config files to load custom fedora config
+echo "lit_config.load_config(config, '%{lit_fedora_cfg}')" >> %{buildroot}%{lit_cfg}
 
-# Clang config
-cp %{gcc_lit_cfg} %{clang_lit_cfg}
-sed -i 's~\(config.test_compiler_features = \)\[[^\[]\+]~\1["clang"]~' %{clang_lit_cfg}
-sed -i 's~\(config.test_c_compiler = \)"[^"]\+"~\1"%{_bindir}/clang"~' %{clang_lit_cfg}
-sed -i 's~\(config.test_cxx_compiler = \)"[^"]\+"~\1"%{_bindir}/clang++"~' %{clang_lit_cfg}
-sed -i 's~\(config.library_dir = \)"[^"]\+"~\1"%{_libdir}"~' %{clang_lit_cfg}
-
-install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
+# Install test script
+install -d %{buildroot}%{_libexecdir}/tests/libomp
+install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 
 
 %files
@@ -133,8 +119,12 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_datadir}/libomp
 
 %files test
 %{_datadir}/libomp
+%{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Apr 25 2019 Tom Stellard <tstellar@redhat.com> - 8.0.0-2
+- Simplify libomp-test package
+
 * Wed Mar 20 2019 sguelton@redhat.com - 8.0.0-1
 - 8.0.0 final
 
