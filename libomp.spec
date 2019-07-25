@@ -10,7 +10,7 @@
 
 Name: libomp
 Version: 8.0.0
-Release: 2%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Release: 2%{?rc_ver:.rc%{rc_ver}}%{?dist}.1
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -122,6 +122,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 8.0.0-2.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Thu Apr 25 2019 Tom Stellard <tstellar@redhat.com> - 8.0.0-2
 - Simplify libomp-test package
 
