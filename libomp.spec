@@ -1,4 +1,5 @@
-#%%global rc_ver 4
+%global rc_ver 3
+%global baserelease 0.1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -9,8 +10,8 @@
 %endif
 
 Name: libomp
-Version: 8.0.0
-Release: 2%{?rc_ver:.rc%{rc_ver}}%{?dist}.1
+Version: 9.0.0
+Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -122,6 +123,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Aug 22 2019 Tom Stellard <tstellar@redhat.com> - 9.0.0-0.1.rc3
+- 9.0.0-rc3 Release
+
 * Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 8.0.0-2.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
