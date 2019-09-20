@@ -1,5 +1,5 @@
-%global rc_ver 3
-%global baserelease 0.1
+#%%global rc_ver 3
+%global baserelease 1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -123,6 +123,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Sep 19 2019 Tom Stellard <tstellar@redhat.com> - 9.0.0-1
+- 9.0.0 Release
+
 * Thu Aug 22 2019 Tom Stellard <tstellar@redhat.com> - 9.0.0-0.1.rc3
 - 9.0.0-rc3 Release
 
