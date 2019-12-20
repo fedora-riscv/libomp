@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 9.0.0
+Version: 9.0.1
 Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -123,6 +123,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Dec 19 2019 Tom Stellard <tstellar@redhat.com> - 9.0.1-1
+- 9.0.1 Release
+
 * Thu Sep 19 2019 Tom Stellard <tstellar@redhat.com> - 9.0.0-1
 - 9.0.0 Release
 
