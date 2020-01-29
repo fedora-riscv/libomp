@@ -1,5 +1,5 @@
 #%%global rc_ver 3
-%global baserelease 1
+%global baserelease 2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -123,6 +123,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 9.0.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Thu Dec 19 2019 Tom Stellard <tstellar@redhat.com> - 9.0.1-1
 - 9.0.1 Release
 
