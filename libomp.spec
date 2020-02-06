@@ -1,5 +1,5 @@
-#%%global rc_ver 3
-%global baserelease 2
+%global rc_ver 1
+%global baserelease 0.1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 9.0.1
+Version: 10.0.0
 Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -19,6 +19,8 @@ URL: http://openmp.llvm.org
 Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: run-lit-tests
 Source2: lit.fedora.cfg.py
+Source3: https://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
+Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
 
@@ -103,10 +105,16 @@ echo "lit_config.load_config(config, '%{lit_fedora_cfg}')" >> %{buildroot}%{lit_
 install -d %{buildroot}%{_libexecdir}/tests/libomp
 install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 
+# Remove static libraries with equivalent shared libraries
+rm -rf %{buildroot}%{_libdir}/libarcher_static.a
+
 
 %files
 %{_libdir}/libomp.so
 %{_libdir}/libomptarget.so
+%ifnarch %{arm}
+%{_libdir}/libarcher.so
+%endif
 %ifnarch %{arm} %{ix86}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
 %endif
@@ -123,6 +131,9 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Fri Jan 31 2020 sguelton@redhat.com - 10.0.0-0.1.rc1
+- 10.0.0 rc1
+
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 9.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
