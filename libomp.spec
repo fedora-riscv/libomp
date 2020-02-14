@@ -1,5 +1,5 @@
-%global rc_ver 1
-%global baserelease 0.1
+%global rc_ver 4
+%global baserelease 0.2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -23,6 +23,7 @@ Source3: https://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver
 Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
+Patch1: 99b03c1c18.patch
 
 BuildRequires: cmake
 BuildRequires: elfutils-libelf-devel
@@ -131,6 +132,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Sun Mar 15 2020 sguelton@redhat.com - 10.0.0-0.2.rc4
+- 10.0.0 rc4
+
 * Fri Jan 31 2020 sguelton@redhat.com - 10.0.0-0.1.rc1
 - 10.0.0 rc1
 
