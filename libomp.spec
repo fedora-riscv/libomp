@@ -23,6 +23,7 @@ Source3: https://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver
 Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
+Patch1: 99b03c1c18.patch
 
 BuildRequires: cmake
 BuildRequires: elfutils-libelf-devel
