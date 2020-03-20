@@ -1,5 +1,5 @@
-%global rc_ver 4
-%global baserelease 0.4
+%global rc_ver 5
+%global baserelease 0.5
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -132,6 +132,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Fri Mar 20 2020 sguelton@redhat.com - 10.0.0-0.5.rc5
+- 10.0.0 rc5
+
 * Sun Mar 15 2020 sguelton@redhat.com - 10.0.0-0.4.rc4
 - 10.0.0 rc4
 
