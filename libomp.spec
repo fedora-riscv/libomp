@@ -1,5 +1,5 @@
-%global rc_ver 6
-%global baserelease 0.6
+#%%global rc_ver 6
+%global baserelease 1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -16,10 +16,15 @@ Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org	
-Source0: http://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
+%if 0%{?rc_ver:1}
+Source0: https://prereleases.llvm.org/%{version}/rc%{rc_ver}/%{libomp_srcdir}.tar.xz
+Source3: https://prereleases.llvm.org/%{version}/rc%{rc_ver}/%{libomp_srcdir}.tar.xz.sig
+%else
+Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/%{libomp_srcdir}.tar.xz
+Source3: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/%{libomp_srcdir}.tar.xz.sig
+%endif
 Source1: run-lit-tests
 Source2: lit.fedora.cfg.py
-Source3: https://%{?rc_ver:pre}releases.llvm.org/%{version}/%{?rc_ver:rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
 Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
@@ -61,7 +66,7 @@ Requires: python3-lit
 OpenMP regression tests
 
 %prep
-%autosetup -n openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src -p1
+%autosetup -n %{libomp_srcdir} -p1
 
 %build
 mkdir -p _build
@@ -132,6 +137,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Mar 30 2020 sguelton@redhat.com - 10.0.0-1
+- 10.0.0 final
+
 * Wed Mar 25 2020 sguelton@redhat.com - 10.0.0-0.6.rc6
 - 10.0.0 rc6
 
