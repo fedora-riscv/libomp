@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 2
+%global baserelease 3
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -54,7 +54,7 @@ OpenMP header files.
 
 %package test
 Summary: OpenMP regression tests
-Requires: %{name}%{?isa} = %{version}
+Requires: %{name}%{?isa} = %{version}-%{release}
 Requires: %{name}-devel%{?isa} = %{version}-%{release}
 Requires: clang
 Requires: llvm
@@ -137,6 +137,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Jun 16 2020 sguelton@redhat.com - 10.0.0-3
+- Add Requires: libomp = %{version}-%{release} to libomp-test to avoid
+  the need to test interoperability between the various combinations of old
+  and new subpackages.
+
 * Mon Jun 01 2020 sguelton@redhat.com - 10.0.0-2
 - Add Requires: libomp-devel = %{version}-%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
