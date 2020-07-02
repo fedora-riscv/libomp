@@ -1,5 +1,5 @@
-#%%global rc_ver 6
-%global baserelease 8
+%global rc_ver 1
+%global baserelease 0.1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 10.0.0
+Version: 11.0.0
 Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -28,7 +28,6 @@ Source2: lit.fedora.cfg.py
 Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
-Patch1: 99b03c1c18.patch
 
 BuildRequires: gcc
 BuildRequires: gcc-c++
@@ -121,6 +120,8 @@ install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
 # Remove static libraries with equivalent shared libraries
 rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 
+%check
+%cmake_build --target check-openmp
 
 %files
 %license LICENSE.txt
@@ -138,6 +139,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/clang/%{version}/include/omp-tools.h
 %{_libdir}/clang/%{version}/include/ompt.h
+# FIXME: This is probably wrong.  Seems like LIBOMP_HEADERS_INSTALL may
+# not be respected.
+%{_includedir}/ompt-multiplex.h
 %endif
 
 %files test
@@ -145,6 +149,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Aug 10 2020 Tom Stellard <tstellar@redhat.com> - 11.0.0-0.1.rc1
+- 11.0.0-rc1 Release
+
 * Mon Aug 10 2020 sguelton@redhat.com - 10.0.0-8
 - Make gcc dependency explicit, see https://fedoraproject.org/wiki/Packaging:C_and_C%2B%2B#BuildRequires_and_Requires
 - use %%license macro
