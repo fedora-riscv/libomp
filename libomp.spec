@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 3
+%global baserelease 4
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -31,11 +31,15 @@ Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
 Patch1: 99b03c1c18.patch
 
 BuildRequires: cmake
+BuildRequires: ninja-build
 BuildRequires: elfutils-libelf-devel
 BuildRequires: perl
 BuildRequires: perl-Data-Dumper
 BuildRequires: perl-Encode
 BuildRequires: libffi-devel
+
+# For gpg source verification
+BuildRequires:	gnupg2
 
 Requires: elfutils-libelf%{?isa}
 
@@ -66,13 +70,12 @@ Requires: python3-lit
 OpenMP regression tests
 
 %prep
+%{gpgverify} --keyring='%{SOURCE4}' --signature='%{SOURCE3}' --data='%{SOURCE0}'
 %autosetup -n %{libomp_srcdir} -p1
 
 %build
-mkdir -p _build
-cd _build
 
-%cmake .. \
+%cmake  -GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
 	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{version}/include \
 %if 0%{?__isa_bits} == 64
@@ -81,11 +84,11 @@ cd _build
 	-DOPENMP_LIBDIR_SUFFIX= \
 %endif
 
-%make_build
+%cmake_build
 
 
 %install
-%make_install -C _build
+%cmake_install
 
 # Test package setup
 %global libomp_srcdir %{_datadir}/libomp/src/
@@ -99,7 +102,7 @@ cp -R runtime/src  %{buildroot}%{libomp_srcdir}/runtime
 
 # Generate lit config files.  Strip off the last line that initiates the
 # test run, so we can customize the configuration.
-head -n -1 _build/runtime/test/lit.site.cfg >> %{buildroot}%{lit_cfg}
+head -n -1 %{_vpath_builddir}/runtime/test/lit.site.cfg >> %{buildroot}%{lit_cfg}
 
 # Install custom fedora config file
 cp %{SOURCE2} %{buildroot}%{lit_fedora_cfg}
@@ -137,6 +140,10 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Jul 20 2020 sguelton@redhat.com - 10.0.0-4
+- Use modern cmake macro
+- Use gnupg verify
+
 * Tue Jun 16 2020 sguelton@redhat.com - 10.0.0-3
 - Add Requires: libomp = %{version}-%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
