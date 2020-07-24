@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 7
+%global baserelease 8
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -30,6 +30,8 @@ Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
 Patch1: 99b03c1c18.patch
 
+BuildRequires: gcc
+BuildRequires: gcc-c++
 BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: elfutils-libelf-devel
@@ -121,6 +123,7 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 
 
 %files
+%license LICENSE.txt
 %{_libdir}/libomp.so
 %{_libdir}/libomptarget.so
 %ifnarch %{arm}
@@ -142,6 +145,10 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Aug 10 2020 sguelton@redhat.com - 10.0.0-8
+- Make gcc dependency explicit, see https://fedoraproject.org/wiki/Packaging:C_and_C%2B%2B#BuildRequires_and_Requires
+- use %%license macro
+
 * Sat Aug 08 2020 Jeff Law <releng@fedoraproject.org> - 10.0.0-7
 - Disable LTO for now
 
