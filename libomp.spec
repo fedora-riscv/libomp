@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 10.0.0
+Version: 10.0.1
 Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -137,6 +137,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Jul 27 2020 sguelton@redhat.com - 10.0.1-1
+- 10.0.1
+
 * Fri Apr 3 2020 sguelton@redhat.com - 10.0.0-1
 - 10.0.0 final
 
