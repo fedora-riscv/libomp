@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 6
+%global baserelease 7
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -74,6 +74,8 @@ OpenMP regression tests
 %autosetup -n %{libomp_srcdir} -p1
 
 %build
+# LTO causes build failures in this package.  Disable LTO for now
+%define _lto_cflags %{nil}
 
 %cmake  -GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
@@ -140,6 +142,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Sat Aug 08 2020 Jeff Law <releng@fedoraproject.org> - 10.0.0-7
+- Disable LTO for now
+
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 10.0.0-6
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
