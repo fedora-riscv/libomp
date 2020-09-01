@@ -1,4 +1,4 @@
-%global rc_ver 1
+%global rc_ver 2
 %global baserelease 0.1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
@@ -16,16 +16,11 @@ Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org	
-%if 0%{?rc_ver:1}
-Source0: https://prereleases.llvm.org/%{version}/rc%{rc_ver}/%{libomp_srcdir}.tar.xz
-Source3: https://prereleases.llvm.org/%{version}/rc%{rc_ver}/%{libomp_srcdir}.tar.xz.sig
-%else
-Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/%{libomp_srcdir}.tar.xz
-Source3: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}/%{libomp_srcdir}.tar.xz.sig
-%endif
-Source1: run-lit-tests
-Source2: lit.fedora.cfg.py
-Source4: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
+Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
+Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
+Source2: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
+Source3: run-lit-tests
+Source4: lit.fedora.cfg.py
 
 Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
 
@@ -71,7 +66,7 @@ Requires: python3-lit
 OpenMP regression tests
 
 %prep
-%{gpgverify} --keyring='%{SOURCE4}' --signature='%{SOURCE3}' --data='%{SOURCE0}'
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %autosetup -n %{libomp_srcdir} -p1
 
 %build
@@ -108,14 +103,14 @@ cp -R runtime/src  %{buildroot}%{libomp_srcdir}/runtime
 head -n -1 %{_vpath_builddir}/runtime/test/lit.site.cfg >> %{buildroot}%{lit_cfg}
 
 # Install custom fedora config file
-cp %{SOURCE2} %{buildroot}%{lit_fedora_cfg}
+cp %{SOURCE4} %{buildroot}%{lit_fedora_cfg}
 
 # Patch lit config files to load custom fedora config
 echo "lit_config.load_config(config, '%{lit_fedora_cfg}')" >> %{buildroot}%{lit_cfg}
 
 # Install test script
 install -d %{buildroot}%{_libexecdir}/tests/libomp
-install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/tests/libomp
+install -m 0755 %{SOURCE3} %{buildroot}%{_libexecdir}/tests/libomp
 
 # Remove static libraries with equivalent shared libraries
 rm -rf %{buildroot}%{_libdir}/libarcher_static.a
@@ -149,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Sep 01 2020 sguelton@redhat.com - 11.0.0-0.1.rc2
+- 11.0.0-rc2 Release
+
 * Mon Aug 10 2020 Tom Stellard <tstellar@redhat.com> - 11.0.0-0.1.rc1
 - 11.0.0-rc1 Release
 
