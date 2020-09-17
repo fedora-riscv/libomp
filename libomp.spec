@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 1
+%global baserelease 2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -137,6 +137,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Sep 17 2020 sguelton@redhat.com - 10.0.1-2
+- rebuilt with gating.yaml update
+
 * Mon Jul 27 2020 sguelton@redhat.com - 10.0.1-1
 - 10.0.1
 
