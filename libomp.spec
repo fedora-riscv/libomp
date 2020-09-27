@@ -1,5 +1,5 @@
 %global rc_ver 3
-%global baserelease 0.1
+%global baserelease 0.2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -144,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Sun Sep 27 2020 sguelton@redhat.com - 11.0.0-0.2.rc3
+- Fix NVR
+
 * Thu Sep 24 2020 sguelton@redhat.com - 11.0.0-0.1.rc3
 - 11.0.0-rc3 Release
 
