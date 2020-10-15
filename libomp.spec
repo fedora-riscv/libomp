@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 0.5
+%global baserelease 1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -144,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Oct 15 2020 sguelton@redhat.com - 11.0.0-1
+- Fix NVR
+
 * Mon Oct 12 2020 sguelton@redhat.com - 11.0.0-0.5
 - llvm 11.0.0 - final release
 
