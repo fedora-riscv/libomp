@@ -1,5 +1,5 @@
 #%%global rc_ver 6
-%global baserelease 1
+%global baserelease 2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -47,7 +47,7 @@ OpenMP runtime for clang.
 
 %package devel
 Summary: OpenMP header files
-Requires: clang-devel%{?isa} = %{version}
+Requires: clang-resource-filesystem%{?isa} = %{version}
 
 %description devel
 OpenMP header files.
@@ -144,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Oct 28 2020 Tom Stellard <tstellar@redhat.com> - 11.0.0-2
+- Replace clang-devel dependency with clang-resource-filesystem
+
 * Thu Oct 15 2020 sguelton@redhat.com - 11.0.0-1
 - Fix NVR
 
