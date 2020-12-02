@@ -1,5 +1,5 @@
-#%%global rc_ver 6
-%global baserelease 2
+%global rc_ver 1
+%global baserelease 1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 11.0.0
+Version: 11.0.1
 Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -18,7 +18,7 @@ License: NCSA
 URL: http://openmp.llvm.org	
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
-Source2: https://prereleases.llvm.org/%{version}/hans-gpg-key.asc
+Source2: tstellar-gpg-key.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
@@ -144,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Dec 01 2020 sguelton@redhat.com - 11.0.1-1.rc1
+- llvm 11.0.1-rc1
+
 * Wed Oct 28 2020 Tom Stellard <tstellar@redhat.com> - 11.0.0-2
 - Replace clang-devel dependency with clang-resource-filesystem
 
