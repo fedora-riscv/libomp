@@ -1,5 +1,5 @@
-%global rc_ver 2
-%global baserelease 2
+#%%global rc_ver 2
+%global baserelease 3
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -15,7 +15,7 @@ Release: %{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
-URL: http://openmp.llvm.org	
+URL: http://openmp.llvm.org
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
 Source2: tstellar-gpg-key.asc
@@ -144,6 +144,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Jan 06 2021 Serge Guelton - 11.0.1-3
+- LLVM 11.0.1 final
+
 * Tue Dec 22 2020 sguelton@redhat.com - 11.0.1-2.rc2
 - llvm 11.0.1-rc2
 
