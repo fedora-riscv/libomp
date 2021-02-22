@@ -1,5 +1,5 @@
-%global rc_ver 2
-%global baserelease 3
+%global rc_ver 1
+%global baserelease 1
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 11.1.0
+Version: 12.0.0
 Release: %{?rc_ver:0.}%{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -121,12 +121,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %files
 %license LICENSE.txt
 %{_libdir}/libomp.so
-%{_libdir}/libomptarget.so
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
-%endif
-%ifnarch %{arm} %{ix86}
-%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
 %endif
 
 %files devel
@@ -144,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Feb 22 2021 sguelton@redhat.com - 12.0.0-0.1.rc1
+- 12.0.0-rc1 release
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 11.1.0-0.3.rc2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
