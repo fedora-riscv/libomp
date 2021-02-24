@@ -1,5 +1,5 @@
-%global rc_ver 1
-%global baserelease 1
+%global rc_ver 2
+%global baserelease 2
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -140,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Feb 24 2021 sguelton@redhat.com - 12.0.0-0.2.rc2
+- 12.0.0-rc2 release
+
 * Mon Feb 22 2021 sguelton@redhat.com - 12.0.0-0.1.rc1
 - 12.0.0-rc1 release
 
