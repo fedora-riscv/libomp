@@ -22,7 +22,7 @@ Source2: tstellar-gpg-key.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
-Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
+Patch0: 0001-PATCH-openmp-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-.patch
 
 BuildRequires: gcc
 BuildRequires: gcc-c++
