@@ -67,7 +67,7 @@ OpenMP regression tests
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -n %{libomp_srcdir} -p1
+%autosetup -n %{libomp_srcdir} -p2
 
 %build
 # LTO causes build failures in this package.  Disable LTO for now
