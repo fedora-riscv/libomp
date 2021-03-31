@@ -1,5 +1,5 @@
 %global rc_ver 3
-%global baserelease 4
+%global baserelease 5
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -140,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Mar 31 2021 Jonathan Wakely <jwakely@redhat.com> - 12.0.0-0.5.rc3
+- Rebuilt for removed libstdc++ symbols (#1937698)
+
 * Thu Mar 11 2021 sguelton@redhat.com - 12.0.0-0.4.rc3
 - LLVM 12.0.0 rc3
 
