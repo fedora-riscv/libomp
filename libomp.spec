@@ -1,5 +1,5 @@
-%global rc_ver 4
-%global baserelease 6
+%global rc_ver 5
+%global baserelease 7
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -140,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Apr 08 2021 sguelton@redhat.com - 12.0.0-0.7.rc5
+- New upstream release candidate
+
 * Fri Apr 02 2021 sguelton@redhat.com - 12.0.0-0.6.rc4
 - New upstream release candidate
 
