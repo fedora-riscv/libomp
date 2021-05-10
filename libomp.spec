@@ -1,5 +1,4 @@
-%global rc_ver 1
-%global baserelease 2
+#%%global rc_ver 5
 %global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -10,8 +9,8 @@
 %endif
 
 Name: libomp
-Version: 12.0.0
-Release: %{?rc_ver:0.}%{baserelease}%{?rc_ver:.rc%{rc_ver}}%{?dist}
+Version: 12.0.0%{?rc_ver:~rc%{rc_ver}}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -22,7 +21,7 @@ Source2: tstellar-gpg-key.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
-Patch0: 0001-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-a-cache-varia.patch
+Patch0: 0001-PATCH-openmp-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-.patch
 
 BuildRequires: gcc
 BuildRequires: gcc-c++
@@ -67,7 +66,7 @@ OpenMP regression tests
 
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%autosetup -n %{libomp_srcdir} -p1
+%autosetup -n %{libomp_srcdir} -p2
 
 %build
 # LTO causes build failures in this package.  Disable LTO for now
@@ -140,8 +139,26 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
-* Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 12.0.0-0.2.rc1
-- Rebuilt for removed libstdc++ symbol (#1937698)
+* Fri Apr 16 2021 Tom Stellard <tstellar@redhat.com> - 12.0.0-1
+- 12.0.0 Release
+
+* Thu Apr 08 2021 sguelton@redhat.com - 12.0.0-0.7.rc5
+- New upstream release candidate
+
+* Fri Apr 02 2021 sguelton@redhat.com - 12.0.0-0.6.rc4
+- New upstream release candidate
+
+* Wed Mar 31 2021 Jonathan Wakely <jwakely@redhat.com> - 12.0.0-0.5.rc3
+- Rebuilt for removed libstdc++ symbols (#1937698)
+
+* Thu Mar 11 2021 sguelton@redhat.com - 12.0.0-0.4.rc3
+- LLVM 12.0.0 rc3
+
+* Tue Mar 09 2021 sguelton@redhat.com - 12.0.0-0.3.rc2
+- rebuilt
+
+* Wed Feb 24 2021 sguelton@redhat.com - 12.0.0-0.2.rc2
+- 12.0.0-rc2 release
 
 * Mon Feb 22 2021 sguelton@redhat.com - 12.0.0-0.1.rc1
 - 12.0.0-rc1 release
