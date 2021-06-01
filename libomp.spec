@@ -1,5 +1,6 @@
-#%%global rc_ver 5
-%global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
+%global libomp_version 12.0.1
+%global rc_ver 1
+%global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
 %ifarch ppc64le
@@ -9,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 12.0.0%{?rc_ver:~rc%{rc_ver}}
+Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
 Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
@@ -139,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Jun 01 2021 Tom Stellard <tstellar@redhat.com> - 12.0.1~rc1-1
+- 12.0.1-rc1 Release
+
 * Fri Apr 16 2021 Tom Stellard <tstellar@redhat.com> - 12.0.0-1
 - 12.0.0 Release
 
