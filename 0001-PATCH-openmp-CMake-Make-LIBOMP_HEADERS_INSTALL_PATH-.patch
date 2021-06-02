@@ -1,8 +1,8 @@
-From f2c9c1c9cda831a4305e2dc8899d630ed727353a Mon Sep 17 00:00:00 2001
+From 2472eaf42ee6a98cc4f5c8fd1584aa2f7ef11124 Mon Sep 17 00:00:00 2001
 From: Tom Stellard <tstellar@redhat.com>
 Date: Tue, 16 May 2017 11:52:19 -0400
-Subject: [PATCH] [PATCH][openmp] CMake: Make LIBOMP_HEADERS_INSTALL_PATH a
- cache variable when bulding standalone
+Subject: [PATCH][openmp] CMake: Make LIBOMP_HEADERS_INSTALL_PATH a cache
+ variable when bulding standalone
 
 This way it can be overriden on the command line.
 ---
@@ -10,10 +10,10 @@ This way it can be overriden on the command line.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/openmp/runtime/src/CMakeLists.txt b/openmp/runtime/src/CMakeLists.txt
-index 822f9ca..583a3c3 100644
+index f075c67778fc..d900b3930108 100644
 --- a/openmp/runtime/src/CMakeLists.txt
 +++ b/openmp/runtime/src/CMakeLists.txt
-@@ -305,7 +305,7 @@ add_dependencies(libomp-micro-tests libomp-test-deps)
+@@ -307,7 +307,7 @@ add_dependencies(libomp-micro-tests libomp-test-deps)
  # We want to install libomp in DESTDIR/CMAKE_INSTALL_PREFIX/lib
  # We want to install headers in DESTDIR/CMAKE_INSTALL_PREFIX/include
  if(${OPENMP_STANDALONE_BUILD})
@@ -23,5 +23,5 @@ index 822f9ca..583a3c3 100644
    string(REGEX MATCH "[0-9]+\\.[0-9]+(\\.[0-9]+)?" CLANG_VERSION ${PACKAGE_VERSION})
    set(LIBOMP_HEADERS_INSTALL_PATH "${OPENMP_INSTALL_LIBDIR}/clang/${CLANG_VERSION}/include")
 -- 
-1.8.3.1
+2.30.2
 

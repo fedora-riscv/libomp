@@ -2,6 +2,15 @@
 %global rc_ver 1
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
+%if %{with snapshot_build}
+%undefine rc_ver
+%global llvm_snapshot_vers pre%{llvm_snapshot_yyyymmdd}.g%{llvm_snapshot_git_revision_short}
+%global libomp_srcdir openmp-%{llvm_snapshot_version_major}.%{llvm_snapshot_version_minor}.%{llvm_snapshot_version_patch}.src
+%global maj_ver %{llvm_snapshot_version_major}
+%global min_ver %{llvm_snapshot_version_minor}
+%global patch_ver %{llvm_snapshot_version_patch}
+%global libomp_version %{llvm_snapshot_version_major}.%{llvm_snapshot_version_minor}.%{llvm_snapshot_version_patch}
+%endif
 
 %ifarch ppc64le
 %global libomp_arch ppc64
@@ -16,9 +25,14 @@ Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org
+%if %{with snapshot_build}
+Source0: https://github.com/kwk/llvm-project/releases/download/source-snapshot/libomp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
+%endif
+%if %{without snapshot_build}
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
 Source2: tstellar-gpg-key.asc
+%endif
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
@@ -73,7 +87,9 @@ Requires: python3-lit
 OpenMP regression tests
 
 %prep
+%if %{without snapshot_build}
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
+%endif
 %autosetup -n %{libomp_srcdir} -p2
 
 %build
@@ -158,6 +174,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+%{?llvm_snapshot_changelog_entry}
+
 * Mon Jan 10 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc1-1
 - Update to LLVM 13.0.1rc1
 
