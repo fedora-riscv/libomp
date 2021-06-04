@@ -11,13 +11,13 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org
-Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
-Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
+Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
+Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
 Source2: tstellar-gpg-key.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
@@ -75,7 +75,7 @@ OpenMP regression tests
 
 %cmake  -GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
-	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{version}/include \
+	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{libomp_version}/include \
 %if 0%{?__isa_bits} == 64
 	-DOPENMP_LIBDIR_SUFFIX=64 \
 %else
@@ -126,10 +126,10 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %endif
 
 %files devel
-%{_libdir}/clang/%{version}/include/omp.h
+%{_libdir}/clang/%{libomp_version}/include/omp.h
 %ifnarch %{arm}
-%{_libdir}/clang/%{version}/include/omp-tools.h
-%{_libdir}/clang/%{version}/include/ompt.h
+%{_libdir}/clang/%{libomp_version}/include/omp-tools.h
+%{_libdir}/clang/%{libomp_version}/include/ompt.h
 # FIXME: This is probably wrong.  Seems like LIBOMP_HEADERS_INSTALL may
 # not be respected.
 %{_includedir}/ompt-multiplex.h
@@ -140,6 +140,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Fri Jun 04 2021 Tom Stellard <tstellar@redhat.com> - 12.0.1~rc1-2
+- Fix install path
+
 * Tue Jun 01 2021 Tom Stellard <tstellar@redhat.com> - 12.0.1~rc1-1
 - 12.0.1-rc1 Release
 
