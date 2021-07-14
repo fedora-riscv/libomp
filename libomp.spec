@@ -1,5 +1,6 @@
-#%%global rc_ver 5
-%global libomp_srcdir openmp-%{version}%{?rc_ver:rc%{rc_ver}}.src
+%global libomp_version 12.0.1
+#global rc_ver 3
+%global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
 %ifarch ppc64le
@@ -70,6 +71,7 @@ OpenMP regression tests
 
 %build
 # LTO causes build failures in this package.  Disable LTO for now
+# https://bugzilla.redhat.com/show_bug.cgi?id=1988155
 %define _lto_cflags %{nil}
 
 %cmake  -GNinja \
@@ -139,6 +141,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Jul 13 2021 Tom Stellard <tstellar@redhat.com> - 12.0.1-1
+- 12.0.1 Release
+
 * Fri Apr 16 2021 Tom Stellard <tstellar@redhat.com> - 12.0.0-1
 - 12.0.0 Release
 
