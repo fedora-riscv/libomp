@@ -71,6 +71,7 @@ OpenMP regression tests
 
 %build
 # LTO causes build failures in this package.  Disable LTO for now
+# https://bugzilla.redhat.com/show_bug.cgi?id=1988155
 %define _lto_cflags %{nil}
 
 %cmake  -GNinja \
