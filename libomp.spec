@@ -10,7 +10,7 @@
 %endif
 
 Name: libomp
-Version: 12.0.0%{?rc_ver:~rc%{rc_ver}}
+Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
 Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
