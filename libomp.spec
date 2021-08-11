@@ -1,5 +1,5 @@
-%global libomp_version 12.0.1
-#global rc_ver 3
+%global libomp_version 13.0.0
+%global rc_ver 1
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -11,7 +11,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -36,6 +36,13 @@ BuildRequires: libffi-devel
 
 # For gpg source verification
 BuildRequires:	gnupg2
+
+# The AMDGCN device RTL requires clang and llvm-link to build
+BuildRequires: clang
+BuildRequires: llvm
+
+# libomptarget needs the llvm cmake files
+BuildRequires: llvm-devel
 
 Requires: elfutils-libelf%{?isa}
 
@@ -76,6 +83,7 @@ OpenMP regression tests
 
 %cmake  -GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
+	-DLLVM_DIR=%{_libdir}/cmake/llvm \
 	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{libomp_version}/include \
 %if 0%{?__isa_bits} == 64
 	-DOPENMP_LIBDIR_SUFFIX=64 \
@@ -120,14 +128,22 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %cmake_build --target check-openmp
 
 %files
-%license LICENSE.txt
+%license LICENSE.TXT
 %{_libdir}/libomp.so
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
+%ifnarch %{ix86} %{arm}
+%{_libdir}/libomptarget-amdgcn*.bc
+%{_libdir}/libomptarget.rtl.amdgpu.so
+%{_libdir}/libomptarget.rtl.cuda.so
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%endif
+%{_libdir}/libomptarget.so
 
 %files devel
 %{_libdir}/clang/%{libomp_version}/include/omp.h
+%{_libdir}/cmake/openmp/FindOpenMPTarget.cmake
 %ifnarch %{arm}
 %{_libdir}/clang/%{libomp_version}/include/omp-tools.h
 %{_libdir}/clang/%{libomp_version}/include/ompt.h
@@ -141,6 +157,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Aug 09 2021 Tom Stellard <tstellar@redhat.com> - 13.0.0~rc1-1
+- 13.0.0-rc1 Release
+
 * Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 12.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
