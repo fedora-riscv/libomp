@@ -26,7 +26,7 @@ Summary: OpenMP runtime for clang
 License: NCSA
 URL: http://openmp.llvm.org
 %if %{with snapshot_build}
-Source0: https://github.com/kwk/llvm-project/releases/download/source-snapshot/openmp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
+Source0: %{llvm_snapshot_source_prefix}openmp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
 %endif
 %if %{without snapshot_build}
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
