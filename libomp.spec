@@ -90,6 +90,7 @@ OpenMP regression tests
 %else
 	-DOPENMP_LIBDIR_SUFFIX= \
 %endif
+	-DCMAKE_SKIP_RPATH:BOOL=ON
 
 %cmake_build
 
