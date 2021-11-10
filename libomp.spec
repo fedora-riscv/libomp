@@ -81,7 +81,7 @@ OpenMP regression tests
 # https://bugzilla.redhat.com/show_bug.cgi?id=1988155
 %define _lto_cflags %{nil}
 
-%cmake  -GNinja \
+%cmake	-GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
 	-DLLVM_DIR=%{_libdir}/cmake/llvm \
 	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{libomp_version}/include \
@@ -288,12 +288,12 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 - Use gnupg verify
 
 * Tue Jun 16 2020 sguelton@redhat.com - 10.0.0-3
-- Add Requires: libomp = %{version}-%{release} to libomp-test to avoid
+- Add Requires: libomp = %%{version}-%%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
   and new subpackages.
 
 * Mon Jun 01 2020 sguelton@redhat.com - 10.0.0-2
-- Add Requires: libomp-devel = %{version}-%{release} to libomp-test to avoid
+- Add Requires: libomp-devel = %%{version}-%%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
   and new subpackages.
 
