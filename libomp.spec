@@ -150,6 +150,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %files
 %license LICENSE.TXT
 %{_libdir}/libomp.so
+%if %{with snapshot_build}
+%{_libdir}/libompd.so
+%{_libdir}/libomptarget-new-amdgpu-gfx*.bc
+%{_libdir}/libomptarget-new-nvptx-sm_*.bc
+%endif
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
