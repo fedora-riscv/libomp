@@ -106,6 +106,9 @@ OpenMP regression tests
 %else
 	-DOPENMP_LIBDIR_SUFFIX= \
 %endif
+%if %{with snapshot_build}
+	-DLLVM_VERSION_SUFFIX="%{llvm_snapshot_vers}" \
+%endif
 	-DCMAKE_SKIP_RPATH:BOOL=ON
 
 %cmake_build
