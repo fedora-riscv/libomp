@@ -152,13 +152,13 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomp.so
 %if %{with snapshot_build}
 %{_libdir}/libompd.so
-%{_libdir}/libomptarget-new-amdgpu-gfx*.bc
-%{_libdir}/libomptarget-new-nvptx-sm_*.bc
 %endif
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
 %ifnarch %{ix86} %{arm}
+%{_libdir}/libomptarget-new-amdgpu-gfx*.bc
+%{_libdir}/libomptarget-new-nvptx-sm_*.bc
 %{_libdir}/libomptarget-amdgcn*.bc
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
