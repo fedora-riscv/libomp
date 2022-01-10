@@ -1,5 +1,5 @@
-%global libomp_version 13.0.0
-#global rc_ver 3
+%global libomp_version 13.0.1
+%global rc_ver 1
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -11,7 +11,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -158,6 +158,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Jan 10 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc1-1
+- Update to LLVM 13.0.1rc1
+
 * Sat Jan 08 2022 Miro Hrončok <mhroncok@redhat.com> - 13.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/LIBFFI34
 
