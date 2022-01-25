@@ -1,5 +1,5 @@
 %global libomp_version 13.0.1
-%global rc_ver 2
+%global rc_ver 3
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -158,6 +158,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Jan 25 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc3-2
+- Update to LLVM 13.0.1rc3
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 13.0.1~rc2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
