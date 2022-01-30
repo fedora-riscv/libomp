@@ -96,6 +96,10 @@ OpenMP regression tests
 # https://bugzilla.redhat.com/show_bug.cgi?id=1988155
 %define _lto_cflags %{nil}
 
+# Test if we can default DWARF4 instead of 5
+%global optflags %(echo %{optflags} " -gdwarf-4 ")
+
+
 %cmake  -GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
 	-DLLVM_DIR=%{_libdir}/cmake/llvm \
