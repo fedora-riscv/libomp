@@ -159,10 +159,13 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
-%ifnarch %{ix86} %{arm} x86_64
+# potentially these files do not exist on other archs as well
+%ifnarch x86_64
 %{_libdir}/libomptarget-new-amdgpu-gfx*.bc
 %{_libdir}/libomptarget-new-nvptx-sm_*.bc
 %{_libdir}/libomptarget-amdgcn*.bc
+%endif
+%ifnarch %{ix86} %{arm}
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
