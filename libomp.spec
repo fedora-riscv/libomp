@@ -165,6 +165,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget-new-nvptx-sm_*.bc
 %{_libdir}/libomptarget-amdgcn*.bc
 %endif
+# potentially these exist on other arches as well
+%ifarch x86_64
+%{_libdir}/libomptarget-amdgpu-gfx*.bc
+%{_libdir}/libomptarget-nvptx-*.bc
+%endif
 %ifnarch %{ix86} %{arm}
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
