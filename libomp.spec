@@ -159,7 +159,7 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
-%ifnarch %{ix86} %{arm}
+%ifnarch %{ix86} %{arm} x86_64
 %{_libdir}/libomptarget-new-amdgpu-gfx*.bc
 %{_libdir}/libomptarget-new-nvptx-sm_*.bc
 %{_libdir}/libomptarget-amdgcn*.bc
