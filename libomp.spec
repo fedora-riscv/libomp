@@ -1,5 +1,5 @@
-%global libomp_version 13.0.1
-#global rc_ver 3
+%global libomp_version 14.0.0
+#global rc_ver 1
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -37,9 +37,6 @@ BuildRequires: libffi-devel
 # For gpg source verification
 BuildRequires:	gnupg2
 
-# The AMDGCN device RTL requires clang and llvm-link to build
-BuildRequires: clang
-BuildRequires: llvm
 
 # libomptarget needs the llvm cmake files
 BuildRequires: llvm-devel
@@ -131,11 +128,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %files
 %license LICENSE.TXT
 %{_libdir}/libomp.so
+%{_libdir}/libompd.so
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
 %ifnarch %{ix86} %{arm}
-%{_libdir}/libomptarget-amdgcn*.bc
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
@@ -158,6 +155,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Mar 24 2022 Timm Bäder <tbaeder@redhat.com> - 14.0.0-1
+- 14.0.0 Release
+
 * Thu Feb 03 2022 Nikita Popov <npopov@redhat.com> - 13.0.1-1
 - Update to LLVM 13.0.1 final
 
