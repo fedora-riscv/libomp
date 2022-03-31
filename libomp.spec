@@ -11,7 +11,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -128,8 +128,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %files
 %license LICENSE.TXT
 %{_libdir}/libomp.so
-%{_libdir}/libompd.so
 %ifnarch %{arm}
+%{_libdir}/libompd.so
 %{_libdir}/libarcher.so
 %endif
 %ifnarch %{ix86} %{arm}
@@ -155,6 +155,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Thu Mar 31 2022 Tom Stellard <tstellar@redhat.com> - 14.0.0-2
+- Fix build on arm
+
 * Thu Mar 24 2022 Timm Bäder <tbaeder@redhat.com> - 14.0.0-1
 - 14.0.0 Release
 
