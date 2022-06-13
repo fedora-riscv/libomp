@@ -34,6 +34,7 @@ License: NCSA
 URL: http://openmp.llvm.org
 %if %{with snapshot_build}
 Source0: %{llvm_snapshot_source_prefix}openmp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
+%{llvm_snapshot_extra_source_tags}
 %endif
 %if %{without snapshot_build}
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
