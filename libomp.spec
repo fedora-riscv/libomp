@@ -1,4 +1,4 @@
-%global libomp_version 14.0.0
+%global libomp_version 14.0.5
 #global rc_ver 1
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
@@ -11,7 +11,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -36,7 +36,6 @@ BuildRequires: libffi-devel
 
 # For gpg source verification
 BuildRequires:	gnupg2
-
 
 # libomptarget needs the llvm cmake files
 BuildRequires: llvm-devel
@@ -155,6 +154,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Jun 20 2022 Timm Bäder <tbaeder@redhat.com> - 14.0.5-1
+- 14.0.5 Release
+
 * Thu Mar 31 2022 Tom Stellard <tstellar@redhat.com> - 14.0.0-2
 - Fix build on arm
 
