@@ -1,5 +1,8 @@
-%global libomp_version 14.0.5
-#global rc_ver 1
+%global toolchain clang
+
+%global maj_ver 15
+%global libomp_version %{maj_ver}.0.0
+#global rc_ver 3
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 
@@ -11,21 +14,20 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 2%{?dist}
+Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
 URL: http://openmp.llvm.org
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
-Source2: tstellar-gpg-key.asc
+Source2: release-keys.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
-Patch0: 0001-PATCH-openmp-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-.patch
-
-BuildRequires: gcc
-BuildRequires: gcc-c++
+BuildRequires: clang
+# For clang-offload-packager
+BuildRequires: clang-tools-extra
 BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: elfutils-libelf-devel
@@ -61,8 +63,6 @@ Requires: %{name}%{?isa} = %{version}-%{release}
 Requires: %{name}-devel%{?isa} = %{version}-%{release}
 Requires: clang
 Requires: llvm
-Requires: gcc
-Requires: gcc-c++
 Requires: python3-lit
 
 %description test
@@ -79,8 +79,9 @@ OpenMP regression tests
 
 %cmake	-GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
+	-DCMAKE_MODULE_PATH=%{_libdir}/cmake/llvm \
 	-DLLVM_DIR=%{_libdir}/cmake/llvm \
-	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{libomp_version}/include \
+	-DCMAKE_INSTALL_INCLUDEDIR=%{_libdir}/clang/%{libomp_version}/include \
 %if 0%{?__isa_bits} == 64
 	-DOPENMP_LIBDIR_SUFFIX=64 \
 %else
@@ -132,11 +133,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libarcher.so
 %endif
 %ifnarch %{ix86} %{arm}
-%{_libdir}/libomptarget.rtl.amdgpu.so
-%{_libdir}/libomptarget.rtl.cuda.so
-%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%{_libdir}/libomptarget.rtl.amdgpu.so.%{maj_ver}
+%{_libdir}/libomptarget.rtl.cuda.so.%{maj_ver}
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{maj_ver}
 %endif
-%{_libdir}/libomptarget.so
+%{_libdir}/libomptarget.so.%{maj_ver}
 
 %files devel
 %{_libdir}/clang/%{libomp_version}/include/omp.h
@@ -144,16 +145,26 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/clang/%{libomp_version}/include/omp-tools.h
 %{_libdir}/clang/%{libomp_version}/include/ompt.h
-# FIXME: This is probably wrong.  Seems like LIBOMP_HEADERS_INSTALL may
-# not be respected.
-%{_includedir}/ompt-multiplex.h
+%{_libdir}/clang/%{libomp_version}/include/ompt-multiplex.h
 %endif
+%ifnarch %{ix86} %{arm}
+%{_libdir}/libomptarget.rtl.amdgpu.so
+%{_libdir}/libomptarget.rtl.cuda.so
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%{_libdir}/libomptarget.devicertl.a
+%{_libdir}/libomptarget-amdgpu-*.bc
+%{_libdir}/libomptarget-nvptx-*.bc
+%endif
+%{_libdir}/libomptarget.so
 
 %files test
 %{_datadir}/libomp
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Tue Sep 06 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-1
+- Update to LLVM 15.0.0
+
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 14.0.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
