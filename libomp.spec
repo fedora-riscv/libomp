@@ -1,4 +1,4 @@
-%global libomp_version 13.0.0
+%global libomp_version 13.0.1
 #global rc_ver 3
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
@@ -157,6 +157,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Aug 03 2022 Tom Stellard <tstellar@redhat.com> - 13.0.1-1
+- 13.0.1 Release
+
 * Mon Oct 04 2021 Tom Stellard <tstellar@redhat.com> - 13.0.0-1
 - 13.0.0 Release
 
