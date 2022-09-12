@@ -14,7 +14,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -52,6 +52,7 @@ OpenMP runtime for clang.
 
 %package devel
 Summary: OpenMP header files
+Requires: %{name}%{?isa} = %{version}-%{release}
 Requires: clang-resource-filesystem%{?isa} = %{version}
 
 %description devel
@@ -162,6 +163,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Sep 12 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-2
+- Add explicit requires from libomp-devel to libomp
+
 * Tue Sep 06 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-1
 - Update to LLVM 15.0.0
 
