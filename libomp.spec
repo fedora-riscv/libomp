@@ -14,7 +14,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: OpenMP runtime for clang
 
 License: NCSA
@@ -74,9 +74,6 @@ OpenMP regression tests
 %autosetup -n %{libomp_srcdir} -p2
 
 %build
-# LTO causes build failures in this package.  Disable LTO for now
-# https://bugzilla.redhat.com/show_bug.cgi?id=1988155
-%define _lto_cflags %{nil}
 
 %cmake	-GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
@@ -163,6 +160,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Mon Sep 12 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-3
+- Re-enable LTO build
+
 * Mon Sep 12 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-2
 - Add explicit requires from libomp-devel to libomp
 
