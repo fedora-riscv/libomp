@@ -1,0 +1,26 @@
+From f2ddf903f588021507faefec15d360edb1e425e5 Mon Sep 17 00:00:00 2001
+From: Nikita Popov <npopov@redhat.com>
+Date: Fri, 20 Jan 2023 10:11:01 +0100
+Subject: [PATCH] [libomp] Explicitly include <string> header (NFC)
+
+This is required to build against libstdc++ 13. Debug.h uses
+std::stoi() from <string> without explicitly including it.
+---
+ openmp/libomptarget/include/Debug.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/openmp/libomptarget/include/Debug.h b/openmp/libomptarget/include/Debug.h
+index 4e7da8b7d53f..387dfe50659e 100644
+--- a/openmp/libomptarget/include/Debug.h
++++ b/openmp/libomptarget/include/Debug.h
+@@ -39,6 +39,7 @@
+ 
+ #include <atomic>
+ #include <mutex>
++#include <string>
+ 
+ /// 32-Bit field data attributes controlling information presented to the user.
+ enum OpenMPInfoType : uint32_t {
+-- 
+2.39.0
+
