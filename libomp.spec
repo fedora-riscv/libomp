@@ -2,22 +2,25 @@
 
 %if %{with snapshot_build}
 # Unlock LLVM Snapshot LUA functions
-%{llvm_sb_verbose}
 %{llvm_sb}
 %endif
 
-%global libomp_version 13.0.1
-%global rc_ver 1
-%global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
-
 %if %{with snapshot_build}
-%undefine rc_ver
-%global libomp_srcdir openmp-%{llvm_snapshot_version_major}.%{llvm_snapshot_version_minor}.%{llvm_snapshot_version_patch}.src
 %global maj_ver %{llvm_snapshot_version_major}
-%global min_ver %{llvm_snapshot_version_minor}
-%global patch_ver %{llvm_snapshot_version_patch}
-%global libomp_version %{llvm_snapshot_version_major}.%{llvm_snapshot_version_minor}.%{llvm_snapshot_version_patch}
+%global libomp_version %{llvm_snapshot_version}
+%else
+%global maj_ver 15
+%global libomp_version %{maj_ver}.0.7
+#global rc_ver 3
 %endif
+
+%global toolchain clang
+
+# Opt out of https://fedoraproject.org/wiki/Changes/fno-omit-frame-pointer
+# https://bugzilla.redhat.com/show_bug.cgi?id=2158587
+%undefine _include_frame_pointers
+
+%global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
 %ifarch ppc64le
 %global libomp_arch ppc64
@@ -30,7 +33,7 @@ Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix
 Release: 1%{?dist}
 Summary: OpenMP runtime for clang
 
-License: NCSA
+License: Apache-2.0 WITH LLVM-exception OR NCSA
 URL: http://openmp.llvm.org
 %if %{with snapshot_build}
 Source0: %{llvm_snapshot_source_prefix}openmp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
@@ -39,15 +42,16 @@ Source0: %{llvm_snapshot_source_prefix}openmp-%{llvm_snapshot_yyyymmdd}.src.tar.
 %if %{without snapshot_build}
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
-Source2: tstellar-gpg-key.asc
-%endif
+Source2: release-keys.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
-Patch0: 0001-PATCH-openmp-CMake-Make-LIBOMP_HEADERS_INSTALL_PATH-.patch
+# TODO: Not needed with LLVM 16.
+Patch1: 0001-libomp-Explicitly-include-string-header-NFC.patch
 
-BuildRequires: gcc
-BuildRequires: gcc-c++
+BuildRequires: clang
+# For clang-offload-packager
+BuildRequires: clang-tools-extra
 BuildRequires: cmake
 BuildRequires: ninja-build
 BuildRequires: elfutils-libelf-devel
@@ -58,10 +62,6 @@ BuildRequires: libffi-devel
 
 # For gpg source verification
 BuildRequires:	gnupg2
-
-# The AMDGCN device RTL requires clang and llvm-link to build
-BuildRequires: clang
-BuildRequires: llvm
 
 # libomptarget needs the llvm cmake files
 BuildRequires: llvm-devel
@@ -76,6 +76,7 @@ OpenMP runtime for clang.
 
 %package devel
 Summary: OpenMP header files
+Requires: %{name}%{?isa} = %{version}-%{release}
 Requires: clang-resource-filesystem%{?isa} = %{version}
 
 %description devel
@@ -87,8 +88,6 @@ Requires: %{name}%{?isa} = %{version}-%{release}
 Requires: %{name}-devel%{?isa} = %{version}-%{release}
 Requires: clang
 Requires: llvm
-Requires: gcc
-Requires: gcc-c++
 Requires: python3-lit
 
 %description test
@@ -101,18 +100,12 @@ OpenMP regression tests
 %autosetup -n %{libomp_srcdir} -p2
 
 %build
-# LTO causes build failures in this package.  Disable LTO for now
-# https://bugzilla.redhat.com/show_bug.cgi?id=1988155
-%define _lto_cflags %{nil}
 
-# Test if we can default DWARF4 instead of 5
-%global optflags %(echo %{optflags} " -gdwarf-4 ")
-
-
-%cmake  -GNinja \
+%cmake	-GNinja \
 	-DLIBOMP_INSTALL_ALIASES=OFF \
+	-DCMAKE_MODULE_PATH=%{_libdir}/cmake/llvm \
 	-DLLVM_DIR=%{_libdir}/cmake/llvm \
-	-DLIBOMP_HEADERS_INSTALL_PATH:PATH=%{_libdir}/clang/%{libomp_version}/include \
+	-DCMAKE_INSTALL_INCLUDEDIR=%{_libdir}/clang/%{libomp_version}/include \
 %if 0%{?__isa_bits} == 64
 	-DOPENMP_LIBDIR_SUFFIX=64 \
 %else
@@ -173,11 +166,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget-nvptx-*.bc
 %endif
 %ifnarch %{ix86} %{arm}
-%{_libdir}/libomptarget.rtl.amdgpu.so
-%{_libdir}/libomptarget.rtl.cuda.so
-%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%{_libdir}/libomptarget.rtl.amdgpu.so.%{maj_ver}
+%{_libdir}/libomptarget.rtl.cuda.so.%{maj_ver}
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{maj_ver}
 %endif
-%{_libdir}/libomptarget.so
+%{_libdir}/libomptarget.so.%{maj_ver}
 
 %files devel
 %{_libdir}/clang/%{libomp_version}/include/omp.h
@@ -185,10 +178,17 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/clang/%{libomp_version}/include/omp-tools.h
 %{_libdir}/clang/%{libomp_version}/include/ompt.h
-# FIXME: This is probably wrong.  Seems like LIBOMP_HEADERS_INSTALL may
-# not be respected.
-%{_includedir}/ompt-multiplex.h
+%{_libdir}/clang/%{libomp_version}/include/ompt-multiplex.h
 %endif
+%ifnarch %{ix86} %{arm}
+%{_libdir}/libomptarget.rtl.amdgpu.so
+%{_libdir}/libomptarget.rtl.cuda.so
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%{_libdir}/libomptarget.devicertl.a
+%{_libdir}/libomptarget-amdgpu-*.bc
+%{_libdir}/libomptarget-nvptx-*.bc
+%endif
+%{_libdir}/libomptarget.so
 
 %files test
 %{_datadir}/libomp
@@ -196,6 +196,57 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 
 %changelog
 %{?llvm_snapshot_changelog_entry}
+
+* Tue Jan 31 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 15.0.7-5
+- Include the Apache license adopted in 2019.
+
+* Fri Jan 20 2023 Tom Stellard <tstellar@redhat.com> - 15.0.7-4
+- Omit frame pointers when building
+
+* Fri Jan 20 2023 Nikita Popov <npopov@redhat.com> - 15.0.7-3
+- Fix build against GCC 13
+
+* Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 15.0.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Fri Jan 13 2023 Nikita Popov <npopov@redhat.com> - 15.0.7-1
+- Update to LLVM 15.0.7
+
+* Tue Dec 06 2022 Nikita Popov <npopov@redhat.com> - 15.0.6-1
+- Update to LLVM 15.0.6
+
+* Mon Nov 07 2022 Nikita Popov <npopov@redhat.com> - 15.0.4-1
+- Update to LLVM 15.0.4
+
+* Mon Sep 12 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-3
+- Re-enable LTO build
+
+* Mon Sep 12 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-2
+- Add explicit requires from libomp-devel to libomp
+
+* Tue Sep 06 2022 Nikita Popov <npopov@redhat.com> - 15.0.0-1
+- Update to LLVM 15.0.0
+
+* Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 14.0.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Mon Jun 20 2022 Timm Bäder <tbaeder@redhat.com> - 14.0.5-1
+- 14.0.5 Release
+
+* Thu Mar 24 2022 Timm Bäder <tbaeder@redhat.com> - 14.0.0-1
+- 14.0.0 Release
+
+* Thu Feb 03 2022 Nikita Popov <npopov@redhat.com> - 13.0.1-1
+- Update to LLVM 13.0.1 final
+
+* Tue Jan 25 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc3-2
+- Update to LLVM 13.0.1rc3
+
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 13.0.1~rc2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Thu Jan 13 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc2-1
+- Update to LLVM 13.0.1rc2
 
 * Mon Jan 10 2022 Nikita Popov <npopov@redhat.com> - 13.0.1~rc1-1
 - Update to LLVM 13.0.1rc1
@@ -315,12 +366,12 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 - Use gnupg verify
 
 * Tue Jun 16 2020 sguelton@redhat.com - 10.0.0-3
-- Add Requires: libomp = %{version}-%{release} to libomp-test to avoid
+- Add Requires: libomp = %%{version}-%%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
   and new subpackages.
 
 * Mon Jun 01 2020 sguelton@redhat.com - 10.0.0-2
-- Add Requires: libomp-devel = %{version}-%{release} to libomp-test to avoid
+- Add Requires: libomp-devel = %%{version}-%%{release} to libomp-test to avoid
   the need to test interoperability between the various combinations of old
   and new subpackages.
 

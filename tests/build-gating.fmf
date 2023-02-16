@@ -23,12 +23,20 @@ adjust:
     environment+:
       WITH_SCL: "scl enable llvm-toolset-13.0 rust-toolset-1.58"
     when: "collection == llvm-toolset-13.0"
+  - because: "When testing SCL-ized LLVM, the collection must be enabled first"
+    environment+:
+      WITH_SCL: "scl enable llvm-toolset-14.0"
+    when: "collection == llvm-toolset-14.0"
 
 discover:
+    - name: libomp-tests
+      how: fmf
+      url: https://src.fedoraproject.org/tests/libomp.git
+      ref: main
     - name: upstream-llvm-integration-testsuite
       how: fmf
-      url: https://src.fedoraproject.org/rpms/llvm.git
-      ref: rawhide
+      url: https://src.fedoraproject.org/tests/llvm.git
+      ref: main
       test: integration-test-suite
 execute:
     how: tmt
