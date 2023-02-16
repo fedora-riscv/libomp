@@ -38,11 +38,11 @@ URL: http://openmp.llvm.org
 %if %{with snapshot_build}
 Source0: %{llvm_snapshot_source_prefix}openmp-%{llvm_snapshot_yyyymmdd}.src.tar.xz
 %{llvm_snapshot_extra_source_tags}
-%endif
-%if %{without snapshot_build}
+%else
 Source0: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz
 Source1: https://github.com/llvm/llvm-project/releases/download/llvmorg-%{libomp_version}%{?rc_ver:-rc%{rc_ver}}/%{libomp_srcdir}.tar.xz.sig
 Source2: release-keys.asc
+%endif
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
