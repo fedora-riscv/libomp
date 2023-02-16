@@ -46,9 +46,6 @@ Source2: release-keys.asc
 Source3: run-lit-tests
 Source4: lit.fedora.cfg.py
 
-# TODO: Not needed with LLVM 16.
-Patch1: 0001-libomp-Explicitly-include-string-header-NFC.patch
-
 BuildRequires: clang
 # For clang-offload-packager
 BuildRequires: clang-tools-extra
