@@ -171,8 +171,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget.rtl.cuda.nextgen.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.nextgen.so.%{so_suffix}
-%endif
 %{_libdir}/libomptarget.so.%{so_suffix}
+%endif
 
 %files devel
 %{_libdir}/clang/%{libomp_version}/include/omp.h
@@ -192,8 +192,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget.devicertl.a
 %{_libdir}/libomptarget-amdgpu-*.bc
 %{_libdir}/libomptarget-nvptx-*.bc
-%endif
 %{_libdir}/libomptarget.so
+%endif
 
 %files test
 %{_datadir}/libomp
