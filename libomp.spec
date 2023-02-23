@@ -8,9 +8,11 @@
 %if %{with snapshot_build}
 %global maj_ver %{llvm_snapshot_version_major}
 %global libomp_version %{llvm_snapshot_version}
+%global so_suffix %{maj_ver}%{llvm_snapshot_version_suffix}
 %else
 %global maj_ver 15
 %global libomp_version %{maj_ver}.0.7
+%global so_suffix %{maj_ver}
 #global rc_ver 3
 %endif
 
@@ -163,11 +165,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget-nvptx-*.bc
 %endif
 %ifnarch %{ix86} %{arm}
-%{_libdir}/libomptarget.rtl.amdgpu.so.%{maj_ver}
-%{_libdir}/libomptarget.rtl.cuda.so.%{maj_ver}
-%{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{maj_ver}
+%{_libdir}/libomptarget.rtl.amdgpu.so.%{so_suffix}
+%{_libdir}/libomptarget.rtl.cuda.so.%{so_suffix}
+%{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{so_suffix}
 %endif
-%{_libdir}/libomptarget.so.%{maj_ver}
+%{_libdir}/libomptarget.so.%{so_suffix}
 
 %files devel
 %{_libdir}/clang/%{libomp_version}/include/omp.h
