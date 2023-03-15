@@ -6,7 +6,7 @@
 
 %global maj_ver 16
 %global libomp_version %{maj_ver}.0.0
-%global rc_ver 3
+%global rc_ver 4
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 %global cmake_srcdir cmake-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 
@@ -182,6 +182,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Wed Mar 15 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.0~rc4-1
+- Update to LLVM 16.0.0 RC4
+
 * Thu Feb 23 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.0~rc3-1
 - Update to LLVM 16.0.0 RC3
 
