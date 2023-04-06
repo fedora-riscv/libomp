@@ -19,7 +19,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}
-Release: 1%{?dist}
+Release: 1.rv64%{?dist}
 Summary: OpenMP runtime for clang
 
 License: Apache-2.0 WITH LLVM-exception OR NCSA
@@ -146,12 +146,14 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %endif
 %ifnarch %{ix86} %{arm}
 # libomptarget is not supported on 32-bit systems.
+%ifnarch riscv64
 %{_libdir}/libomptarget.rtl.amdgpu.so.%{maj_ver}
 %{_libdir}/libomptarget.rtl.amdgpu.nextgen.so.%{maj_ver}
 %{_libdir}/libomptarget.rtl.cuda.so.%{maj_ver}
 %{_libdir}/libomptarget.rtl.cuda.nextgen.so.%{maj_ver}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{maj_ver}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.nextgen.so.%{maj_ver}
+%endif
 %{_libdir}/libomptarget.so.%{maj_ver}
 %endif
 
@@ -165,12 +167,14 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %endif
 %ifnarch %{ix86} %{arm}
 # libomptarget is not supported on 32-bit systems.
+%ifnarch riscv64
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.amdgpu.nextgen.so
 %{_libdir}/libomptarget.rtl.cuda.so
 %{_libdir}/libomptarget.rtl.cuda.nextgen.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.nextgen.so
+%endif
 %{_libdir}/libomptarget.devicertl.a
 %{_libdir}/libomptarget-amdgpu-*.bc
 %{_libdir}/libomptarget-nvptx-*.bc
@@ -182,6 +186,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
+* Fri Aug 11 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 16.0.6-1.rv64
+- Fix build on riscv64.
+
 * Wed Jul 12 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.6-1
 - Update to LLVM 16.0.6
 
