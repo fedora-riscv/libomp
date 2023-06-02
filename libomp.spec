@@ -5,7 +5,7 @@
 %undefine _include_frame_pointers
 
 %global maj_ver 16
-%global libomp_version %{maj_ver}.0.0
+%global libomp_version %{maj_ver}.0.4
 #global rc_ver 4
 %global libomp_srcdir openmp-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
 %global cmake_srcdir cmake-%{libomp_version}%{?rc_ver:rc%{rc_ver}}.src
@@ -186,8 +186,26 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libexecdir}/tests/libomp/
 
 %changelog
-* Thu Apr 06 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 16.0.0-1.rv64
+* Thu Apr 06 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 16.0.4-1.rv64
 - Fix build on riscv64.
+
+* Fri May 19 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.4-1
+- Update to LLVM 16.0.4
+
+* Wed May 10 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.3-1
+- Update to LLVM 16.0.3
+
+* Thu Apr 27 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.2-1
+- Update to LLVM 16.0.2
+
+* Wed Apr 19 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.1-3
+- Bump the release. Fix rhbz#2187642.
+
+* Tue Apr 18 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.1-2
+- Be explicit about libomp-devel denpending on libomp. Fix rhbz#2187642.
+
+* Thu Apr 13 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.1-1
+- Update to LLVM 16.0.1
 
 * Tue Mar 21 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.0-1
 - Update to LLVM 16.0.0
