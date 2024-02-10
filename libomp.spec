@@ -121,12 +121,14 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
-%ifnarch %{ix86} %{arm} riscv64
+%ifnarch %{ix86} %{arm}
 # libomptarget is not supported on 32-bit systems.
+%ifnarch riscv64
 %{_libdir}/libomptarget.rtl.amdgpu.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.cuda.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{so_suffix}
-%{_libdir}/libomptarget.so.%{so_suffix}
+%endif
+%{_libmilkv-duo256m-litedir}/libomptarget.so.%{so_suffix}
 %endif
 
 %files devel
@@ -137,11 +139,13 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_prefix}/lib/clang/%{maj_ver}/include/ompt-multiplex.h
 %endif
 %{_libdir}/cmake/openmp/FindOpenMPTarget.cmake
-%ifnarch %{ix86} %{arm} riscv64
+%ifnarch %{ix86} %{arm}
 # libomptarget is not supported on 32-bit systems.
+%ifnarch riscv64
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%endif
 %{_libdir}/libomptarget.devicertl.a
 %{_libdir}/libomptarget-amdgpu-*.bc
 %{_libdir}/libomptarget-nvptx-*.bc
