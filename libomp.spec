@@ -32,7 +32,7 @@
 
 Name: libomp
 Version: %{libomp_version}%{?rc_ver:~rc%{rc_ver}}%{?llvm_snapshot_version_suffix:~%{llvm_snapshot_version_suffix}}
-Release: 1%{?dist}
+Release: 1.rv64%{?dist}
 Summary: OpenMP runtime for clang
 
 License: Apache-2.0 WITH LLVM-exception OR NCSA
@@ -121,7 +121,7 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %ifnarch %{arm}
 %{_libdir}/libarcher.so
 %endif
-%ifnarch %{ix86} %{arm}
+%ifnarch %{ix86} %{arm} riscv64
 # libomptarget is not supported on 32-bit systems.
 %{_libdir}/libomptarget.rtl.amdgpu.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.cuda.so.%{so_suffix}
@@ -137,7 +137,7 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_prefix}/lib/clang/%{maj_ver}/include/ompt-multiplex.h
 %endif
 %{_libdir}/cmake/openmp/FindOpenMPTarget.cmake
-%ifnarch %{ix86} %{arm}
+%ifnarch %{ix86} %{arm} riscv64
 # libomptarget is not supported on 32-bit systems.
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
@@ -175,6 +175,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 * Wed Aug 23 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 17.0.0~rc2-1
 - Update to LLVM 17.0.0 RC2
 
+* Fri Aug 11 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 16.0.6-1.rv64
+- Fix build on riscv64.
+
 * Wed Aug 02 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 17.0.0~rc1-1
 - Update to LLVM 17.0.0 RC1
 
@@ -192,6 +195,9 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 
 * Thu Jun 15 2023 Nikita Popov <npopov@redhat.com> - 16.0.5-2
 - Use llvm-cmake-utils package
+
+* Wed Jul 12 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.6-1
+- Update to LLVM 16.0.6
 
 * Tue Jun 06 2023 Tulio Magno Quites Machado Filho <tuliom@redhat.com> - 16.0.5-1
 - Update to LLVM 16.0.5
