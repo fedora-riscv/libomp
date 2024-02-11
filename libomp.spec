@@ -127,8 +127,8 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget.rtl.amdgpu.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.cuda.so.%{so_suffix}
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so.%{so_suffix}
-%endif
 %{_libmilkv-duo256m-litedir}/libomptarget.so.%{so_suffix}
+%endif
 %endif
 
 %files devel
