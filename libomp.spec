@@ -145,11 +145,11 @@ rm -rf %{buildroot}%{_libdir}/libarcher_static.a
 %{_libdir}/libomptarget.rtl.amdgpu.so
 %{_libdir}/libomptarget.rtl.cuda.so
 %{_libdir}/libomptarget.rtl.%{libomp_arch}.so
+%{_libdir}/libomptarget.so
 %endif
 %{_libdir}/libomptarget.devicertl.a
 %{_libdir}/libomptarget-amdgpu-*.bc
 %{_libdir}/libomptarget-nvptx-*.bc
-%{_libdir}/libomptarget.so
 %endif
 
 %changelog
